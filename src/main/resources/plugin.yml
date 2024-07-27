@@ -1,0 +1,29 @@
+name: EliteBossEvent
+version: '${project.version}'
+main: com.pinont.elitebossevent.EliteBossEvent
+api-version: '1.20'
+
+commands:
+    eliteboss:
+        description: EliteBossEvent command
+        permission: elitebossevent.use
+        usage: /eliteboss
+        aliases: [ebe]
+
+permissions:
+    elitebossevent.admin:
+        description: EliteBossEvent admin permission
+        parent: [elitebossevent.use, elitebossevent.bypass, elitebossevent.notify]
+
+    elitebossevent.use:
+        description: EliteBossEvent use permission
+        default: true
+
+    elitebossevent.bypass:
+        description: EliteBossEvent bypass permission
+
+    elitebossevent.notify:
+        description: EliteBossEvent notify permission
+
+    elitebossevent.debug:
+        description: EliteBossEvent debug permission

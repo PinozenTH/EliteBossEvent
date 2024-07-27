@@ -1,0 +1,54 @@
+debug:
+  # recommended to set this to false if you don't know what you're doing
+  enabled: false
+  # recommended to set a value to 10 or higher for better performance
+  change-delay-to-sec: false
+  # bypass-permission for debug mode
+  bypass-permission: false
+
+# Minimum players required to start the event (default: 3)
+min-players: 3
+
+# Maximum players allowed to get tick per area (set to 0 for online players size / 2)
+max-players: 0
+
+# Mythic mobs boss name list
+bosses: [
+    "ExampleBossA",
+    "ExampleBossB",
+    "ExampleBossC",
+]
+
+# Normal mythic mobs mob name list
+# Note: if you don't want to include normal mobs, just leave it empty and set include-normal-mobs to true
+MythicMobs: [
+    "MythicMobsA",
+    "MythicMobsB",
+    "MythicMobsC",
+]
+
+# Spawn configuration
+summon-rules:
+  # Worlds where the boss will be spawn
+  spawn-worlds: [
+      "world",
+      "world_nether",
+      "world_the_end"
+  ]
+  # Max spawning count per picked player (default: 8)
+  max-mobs-spawn-count-per-player: 8
+  # Max boss spawn count per world (default: 1)
+  max-boss-spawn-count-per-world: 1
+  # Check level requirement (default: false)
+  check-level-requirement: false
+  # Level requirement for player when boss is about to spawn (default: 1)
+  level-requirement: 10
+  # Check permission requirement (default: false)
+  check-permission-requirement: false
+  # Boss spawn chance (default: 0.1)
+  boss-spawn-chance: 0.1
+  # Include normal mobs when spawning? (default: false)
+  include-normal-mobs: false
+  # delay in minutes before the event starts (default: 10)
+  event-delay: 10
+
