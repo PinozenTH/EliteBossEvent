@@ -2,28 +2,30 @@ name: EliteBossEvent
 version: '${project.version}'
 main: com.pinont.elitebossevent.EliteBossEvent
 api-version: '1.20'
+depend:
+    - MythicMobs
 
 commands:
     eliteboss:
         description: EliteBossEvent command
-        permission: elitebossevent.use
+        permission: ebe.use
         usage: /eliteboss
         aliases: [ebe]
 
 permissions:
-    elitebossevent.admin:
+    ebe.admin:
         description: EliteBossEvent admin permission
-        parent: [elitebossevent.use, elitebossevent.bypass, elitebossevent.notify]
+        parent: [ebe.use, ebe.bypass, ebe.notify]
 
-    elitebossevent.use:
+    ebe.use:
         description: EliteBossEvent use permission
         default: true
 
-    elitebossevent.bypass:
+    ebe.bypass:
         description: EliteBossEvent bypass permission
 
-    elitebossevent.notify:
+    ebe.notify:
         description: EliteBossEvent notify permission
 
-    elitebossevent.debug:
+    ebe.debug:
         description: EliteBossEvent debug permission

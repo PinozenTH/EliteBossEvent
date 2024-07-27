@@ -6,12 +6,6 @@ debug:
   # bypass-permission for debug mode
   bypass-permission: false
 
-# Minimum players required to start the event (default: 3)
-min-players: 3
-
-# Maximum players allowed to get tick per area (set to 0 for online players size / 2)
-max-players: 0
-
 # Mythic mobs boss name list
 bosses: [
     "ExampleBossA",
@@ -21,7 +15,7 @@ bosses: [
 
 # Normal mythic mobs mob name list
 # Note: if you don't want to include normal mobs, just leave it empty and set include-normal-mobs to true
-MythicMobs: [
+mobs: [
     "MythicMobsA",
     "MythicMobsB",
     "MythicMobsC",
@@ -35,6 +29,10 @@ summon-rules:
       "world_nether",
       "world_the_end"
   ]
+  # Minimum players required to start the event (default: 3)
+  min-players: 3
+  # Maximum players allowed to get tick per area (set to 0 for online players size / 2)
+  max-players: 0
   # Max spawning count per picked player (default: 8)
   max-mobs-spawn-count-per-player: 8
   # Max boss spawn count per world (default: 1)
@@ -48,7 +46,11 @@ summon-rules:
   # Boss spawn chance (default: 0.1)
   boss-spawn-chance: 0.1
   # Include normal mobs when spawning? (default: false)
-  include-normal-mobs: false
+  use-vanilla-mobs: false
   # delay in minutes before the event starts (default: 10)
   event-delay: 10
+  # what y level for starting pick a player and  spawning mobs (default: 64)
+  Y-level: 64
+  # which block to whitelist for spawning mobs (default: ["grass_block"])
+  whitelist-block: ["grass_block"]
 
