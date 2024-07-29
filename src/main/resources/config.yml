@@ -7,7 +7,7 @@ debug:
   bypass-permission: false
 
 # Mythic mobs boss name list
-bosses: [
+mythicMob-bosses-name: [
     "ExampleBossA",
     "ExampleBossB",
     "ExampleBossC",
@@ -15,10 +15,19 @@ bosses: [
 
 # Normal mythic mobs mob name list
 # Note: if you don't want to include normal mobs, just leave it empty and set include-normal-mobs to true
-mobs: [
-    "MythicMobsA",
-    "MythicMobsB",
-    "MythicMobsC",
+mythicMob-mini-boss-name: [
+    "MythicMiniBossA",
+    "MythicMiniBossB",
+    "MythicMiniBossC",
+]
+
+vanilla-entity-types: [
+    "CHARGED_CREEPER",
+    "PIGLIN",
+    "HOGLIN",
+    "WITHER_SKELETON",
+    "BABY_ZOMBIE",
+    "JOCKEY_SKELETON"
 ]
 
 # Spawn configuration

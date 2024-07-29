@@ -54,6 +54,16 @@ public class Reply {
         }
     }
 
+    public Reply(LoggerType type, String message) {
+        if (LoggerType.INFO.equals(type)) {
+            log.info(message);
+        } else if (LoggerType.WARNING.equals(type)) {
+            log.warning(message);
+        } else if (LoggerType.SEVERE.equals(type)) {
+            log.severe(message);
+        }
+    }
+
     public Reply(String permission, String message) {
         if (!getServer().getOnlinePlayers().isEmpty()) {
             for (Player player : getServer().getOnlinePlayers()) {
@@ -88,6 +98,12 @@ public class Reply {
         PLAYER,
         BOTH,
         ALLPLAYER
+    }
+
+    public enum LoggerType {
+        INFO,
+        WARNING,
+        SEVERE
     }
 
 }

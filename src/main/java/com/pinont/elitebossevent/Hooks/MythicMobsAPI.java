@@ -1,11 +1,13 @@
 package com.pinont.elitebossevent.Hooks;
 
 import com.pinont.elitebossevent.EliteBossEvent;
+import com.pinont.elitebossevent.Utils.Message.Reply;
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
@@ -24,14 +26,24 @@ public class MythicMobsAPI {
         }
     }
 
+    private void checkProvidedEntity() {
+        EliteBossEvent.getInstance().getConfig().getStringList("mythicMob-bosses-name").forEach(MythicMobsAPI::isPresent);
+        EliteBossEvent.getInstance().getConfig().getStringList("mythicMob-mini-boss-name").forEach(MythicMobsAPI::isPresent);
+    }
+
+    private static void isPresent(String entityName) {
+        if (MythicBukkit.inst().getMobManager().getMythicMob(entityName).isPresent()) {
+            new Reply(Reply.LoggerType.INFO, ChatColor.AQUA + "✔Registered MythicMob: " + entityName);
+        } else {
+            new Reply(Reply.LoggerType.WARNING, ChatColor.RED + entityName + " is not a valid MythicMob!");
+        }
+    }
+
     public static void summon(Location location, String mobName) {
         MythicMob mob = MythicBukkit.inst().getMobManager().getMythicMob(mobName).orElse(null);
         if (mob != null) {
             // spawns mob
-            ActiveMob mobs = mob.spawn(BukkitAdapter.adapt(location), 1);
-
-            // get mob as bukkit entity
-//            Entity entity = mobs.getEntity().getBukkitEntity();
+            mob.spawn(BukkitAdapter.adapt(location), 1);
         } else {
             Bukkit.getLogger().warning(mobName + " is null, make sure that mobs is exist!");
         }

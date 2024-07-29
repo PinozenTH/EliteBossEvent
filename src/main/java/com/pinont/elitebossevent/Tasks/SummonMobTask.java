@@ -5,8 +5,10 @@ import com.pinont.elitebossevent.Hooks.MythicMobsAPI;
 import com.pinont.elitebossevent.Utils.Message.Reply;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -104,22 +106,13 @@ public class SummonMobTask {
         MYTHIC
     }
 
-    enum vanillaEntityType { // undead ignored to sun burn
-        CHARGED_CREEPER,
-        PIGLIN,
-        HOGLIN,
-        WITHER_SKELETON,
-        BABY_ZOMBIE,
-        SKELETON,
-        JOCKEY_SKELETON
-    }
-
     private void spawn(Location location, MobType mobType) {
         if (mobType.equals(MobType.VANILLA)) {
             // spawn vanilla mobs
             Random random = new Random();
             // random vanilla entity types
-            spawnVanillaMob(location, vanillaEntityType.values()[random.nextInt(vanillaEntityType.values().length)]);
+            List<String> vanillaEntityTypes = main.getConfig().getStringList("vanilla-entity-types");
+            spawnVanillaEntity(location, getEntityType(vanillaEntityTypes.get(random.nextInt(vanillaEntityTypes.size()))));
         } else if (mobType.equals(MobType.MYTHIC)) {
             // spawn mythic mobs
             List<String> mobs = new ArrayList<>(main.getConfig().getStringList("mobs"));
@@ -127,22 +120,28 @@ public class SummonMobTask {
         }
     }
 
-    private void spawnVanillaMob(Location location, vanillaEntityType entityType) {
-        if (entityType.equals(vanillaEntityType.CHARGED_CREEPER)) {
-            location.getWorld().spawnEntity(location, EntityType.CREEPER);
-        } else if (entityType.equals(vanillaEntityType.PIGLIN)) {
-            location.getWorld().spawnEntity(location, EntityType.PIGLIN);
-        } else if (entityType.equals(vanillaEntityType.HOGLIN)) {
-            location.getWorld().spawnEntity(location, EntityType.HOGLIN);
-        } else if (entityType.equals(vanillaEntityType.WITHER_SKELETON)) {
-            location.getWorld().spawnEntity(location, EntityType.WITHER_SKELETON);
-        } else if (entityType.equals(vanillaEntityType.BABY_ZOMBIE)) {
-            location.getWorld().spawnEntity(location, EntityType.ZOMBIE);
-        } else if (entityType.equals(vanillaEntityType.SKELETON)) {
-            location.getWorld().spawnEntity(location, EntityType.SKELETON);
-        } else if (entityType.equals(vanillaEntityType.JOCKEY_SKELETON)) {
-            location.getWorld().spawnEntity(location, EntityType.SKELETON_HORSE);
+    private EntityType getEntityType(String entityType) {
+        try {
+            return EntityType.valueOf(entityType); // get EntityType from string
+        } catch (IllegalArgumentException e) {
+            new Reply(Reply.SenderType.CONSOLE, "Invalid entity type: " + entityType);
+            return null;
         }
+    }
+
+    private void spawnVanillaEntity(Location location, EntityType entityType) {
+        if (entityType == null) {
+            new Reply(Reply.SenderType.CONSOLE, "Failed to spawn entity!");
+            return;
+        }
+        Entity entity = Objects.requireNonNull(location.getWorld()).spawnEntity(location, entityType);
+        if (isUndead(entity)) { // set undead entity as elite boss for tagging at sunburn event
+            entity.getPersistentDataContainer().set(EliteBossEvent.eliteBoss, PersistentDataType.BOOLEAN, true);
+        }
+    }
+
+    private Boolean isUndead(Entity entity) {
+        return entity.getType().name().contains("ZOMBIE") || entity.getType().name().contains("SKELETON") || entity.getType().name().contains("PHANTOM");
     }
 
 }
