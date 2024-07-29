@@ -10,7 +10,7 @@ public class Debug {
     private static final boolean debug = EliteBossEvent.getInstance().getConfig().getBoolean("debug.enabled");
     private static final boolean bypass_perm = EliteBossEvent.getInstance().getConfig().getBoolean("debug.bypass-permission");
     private static final String prefix = "Debug: ";
-    public Logger log;
+    public Logger log = EliteBossEvent.getInstance().getLogger();
 
     public Debug(String message) {
         if (debug) {

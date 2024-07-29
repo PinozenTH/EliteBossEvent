@@ -5,6 +5,9 @@
 *.ipr
 *.iws
 
+# Minecraft Test Server
+TestServer/
+
 # IntelliJ
 out/
 

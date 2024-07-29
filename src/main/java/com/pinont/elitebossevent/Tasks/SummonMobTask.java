@@ -14,12 +14,14 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.*;
 
+import static com.pinont.elitebossevent.Listeners.EntityListener.eliteboss;
+
 public class SummonMobTask {
 
     private final EliteBossEvent main = EliteBossEvent.getInstance();
     private final Map<Player, Integer> tickedPlayers = new HashMap<>();
     private final boolean boss = false;
-    private final int maxBosses = main.getConfig().getInt("max-boss-spawn-count-per-world");
+    private final int maxBosses = main.getConfig().getInt("summon-rules.max-boss-spawn-count-per-world");
 
     public void start() {
         int delay = main.getConfig().getInt("summon-rules.event-delay");
@@ -29,8 +31,8 @@ public class SummonMobTask {
             delay = 10;
         }
         int period = seconds ? delay * 20 : delay * 1200;
-        BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTaskTimer(main, new BukkitRunnable() {
+
+        new BukkitRunnable() {
             @Override
             public void run() {
                 if (main.getConfig().getInt("summon-rules.min-players") > Bukkit.getOnlinePlayers().size()) {
@@ -50,7 +52,7 @@ public class SummonMobTask {
                 }
                 summonMob();
             }
-        }, 0L, period); // 1200 ticks = 60 seconds
+        }.runTaskTimer(main, 0, period);
     }
 
     private void summonMob() {
@@ -136,7 +138,7 @@ public class SummonMobTask {
         }
         Entity entity = Objects.requireNonNull(location.getWorld()).spawnEntity(location, entityType);
         if (isUndead(entity)) { // set undead entity as elite boss for tagging at sunburn event
-            entity.getPersistentDataContainer().set(EliteBossEvent.eliteBoss, PersistentDataType.BOOLEAN, true);
+            entity.getPersistentDataContainer().set(eliteboss, PersistentDataType.BOOLEAN, true);
         }
     }
 

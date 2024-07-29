@@ -18,15 +18,11 @@ public final class EliteBossEvent extends JavaPlugin {
 
     public final Boolean debug = getConfig().getBoolean("debug.enabled");
     private Logger log;
-
-    public static NamespacedKey eliteBoss = new NamespacedKey(EliteBossEvent.getInstance(), "eliteboss");
-
-    public static EliteBossEvent getInstance() {
-        return EliteBossEvent.getPlugin(EliteBossEvent.class);
-    }
+    static EliteBossEvent instance;
 
     @Override
     public void onEnable() {
+        instance = this;
         log = this.getLogger();
         MythicMobsAPI.hook();
         loadConfig();
@@ -60,5 +56,9 @@ public final class EliteBossEvent extends JavaPlugin {
 
     private void executeTask() {
         new SummonMobTask().start();
+    }
+
+    public static EliteBossEvent getInstance() {
+        return instance;
     }
 }
