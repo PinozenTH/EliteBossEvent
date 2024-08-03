@@ -11,7 +11,7 @@ import static org.bukkit.Bukkit.getServer;
 public class Reply {
 
     private static final boolean bypass_perm = EliteBossEvent.getInstance().getConfig().getBoolean("debug.bypass-permission");
-    public Logger log;
+    public Logger log = EliteBossEvent.getInstance().getLogger();
 
     public Reply(SenderType type, String message) {
         if (SenderType.CONSOLE.equals(type)) {

@@ -20,13 +20,15 @@ public class MythicMobsAPI {
     public static void hook() {
         if (EliteBossEvent.getInstance().getServer().getPluginManager().getPlugin("MythicMobs") != null) {
             EliteBossEvent.getInstance().getLogger().info("Hooked into MythicMobs!");
+            new Reply(Reply.LoggerType.INFO, ChatColor.AQUA + "Checking provided MythicMobs...");
+            checkProvidedEntity();
         } else {
             EliteBossEvent.getInstance().getLogger().warning("MythicMobs not found! Disabling plugin...");
             EliteBossEvent.getInstance().getServer().getPluginManager().disablePlugin(EliteBossEvent.getInstance());
         }
     }
 
-    private void checkProvidedEntity() {
+    private static void checkProvidedEntity() {
         EliteBossEvent.getInstance().getConfig().getStringList("mythicMob-bosses-name").forEach(MythicMobsAPI::isPresent);
         EliteBossEvent.getInstance().getConfig().getStringList("mythicMob-mini-boss-name").forEach(MythicMobsAPI::isPresent);
     }

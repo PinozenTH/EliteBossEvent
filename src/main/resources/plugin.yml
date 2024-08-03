@@ -9,7 +9,7 @@ commands:
     eliteboss:
         description: EliteBossEvent command
         permission: ebe.use
-        usage: /eliteboss
+        usage: /elitebossevent
         aliases: [ebe]
 
 permissions:

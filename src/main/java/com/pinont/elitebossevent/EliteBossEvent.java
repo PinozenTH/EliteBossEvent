@@ -7,18 +7,27 @@ import com.pinont.elitebossevent.Listeners.MythicMobsListener;
 import com.pinont.elitebossevent.Tasks.SummonMobTask;
 import com.pinont.elitebossevent.Utils.Message.Debug;
 import com.pinont.elitebossevent.Utils.Message.Debug.DebugType;
-import org.bukkit.NamespacedKey;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
+import java.io.File;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 
-public final class EliteBossEvent extends JavaPlugin {
+public class EliteBossEvent extends JavaPlugin {
 
     public final Boolean debug = getConfig().getBoolean("debug.enabled");
     private Logger log;
     static EliteBossEvent instance;
+
+    public EliteBossEvent() {super();}
+
+    protected EliteBossEvent(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file)
+    {
+        super(loader, description, dataFolder, file);
+    }
 
     @Override
     public void onEnable() {
@@ -51,7 +60,8 @@ public final class EliteBossEvent extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getServer().getPluginCommand("eliteboss").setExecutor(new CommandHandler());
+        Objects.requireNonNull(getServer().getPluginCommand("eliteboss")).setExecutor(new CommandHandler());
+        Objects.requireNonNull(getServer().getPluginCommand("eliteboss")).setTabCompleter(new CommandHandler());
     }
 
     private void executeTask() {
