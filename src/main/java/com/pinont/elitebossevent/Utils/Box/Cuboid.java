@@ -137,6 +137,4 @@ public class Cuboid {
                 ", maxY:" + maxY +
                 ", maxZ:" + maxZ + "]";
     }
-
-    // code by aomsin
 }
