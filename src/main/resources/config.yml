@@ -40,6 +40,8 @@ summon-rules:
       "world_nether",
       "world_the_end"
   ]
+  # Radius of the spawn area (default: 10)
+  distance: 10
   # Minimum players required to start the event (default: 3)
   min-players: 3
   # Maximum players allowed to get tick per area (set to 0 for online players size / 2)

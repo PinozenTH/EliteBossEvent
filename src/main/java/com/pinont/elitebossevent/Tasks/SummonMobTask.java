@@ -1,22 +1,18 @@
 package com.pinont.elitebossevent.Tasks;
 
 import com.pinont.elitebossevent.EliteBossEvent;
-import com.pinont.elitebossevent.Hooks.MythicMobsAPI;
+import com.pinont.elitebossevent.Utils.Box.Cuboid;
 import com.pinont.elitebossevent.Utils.Message.Debug;
 import com.pinont.elitebossevent.Utils.Message.Reply;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import static com.pinont.elitebossevent.Listeners.EntityListener.eliteboss;
 import static com.pinont.elitebossevent.Utils.MobsManager.SummonManager.spawnAtPlayer;
 
 public class SummonMobTask {

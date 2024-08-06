@@ -2,10 +2,11 @@ package com.pinont.elitebossevent.Utils.MobsManager;
 
 import com.pinont.elitebossevent.EliteBossEvent;
 import com.pinont.elitebossevent.Hooks.MythicMobsAPI;
+import com.pinont.elitebossevent.Utils.Box.Cuboid;
 import com.pinont.elitebossevent.Utils.Message.Debug;
 import com.pinont.elitebossevent.Utils.Message.Reply;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -24,6 +25,8 @@ public class SummonManager {
 
     private static final EliteBossEvent main = EliteBossEvent.getInstance();
 
+    private static final int distance = main.getConfig().getInt("summon-rules.distance");
+
     public static void spawnAtPlayer(List<Player> players) {
         HashMap<Player, Integer> playerMap = new HashMap<>();
         for (Player player : players) {
@@ -38,7 +41,7 @@ public class SummonManager {
                     if (count >= main.getConfig().getInt("summon-rules.max-mobs-spawn-count-per-player")) {
                         playerMap.remove(player);
                     } else {
-                        summonNearbyPlayer(player);
+                        spawn(player.getLocation(), MobType.valueOf(Objects.requireNonNull(main.getConfig().getString("summon-rules.mob-type")).toUpperCase()));
                         playerMap.put(player, count + 1);
                     }
                 }
@@ -52,51 +55,32 @@ public class SummonManager {
         MIXED
     }
 
-    private static void summonNearbyPlayer(Player player) {
-        Location location = player.getLocation();
-        Location randomLocation = getSafeRandomLocation(location);
-        if (randomLocation == null) {
-            new Reply(Reply.SenderType.BOTH, "error with summoning entity");
+    public static void spawn(Location location, MobType mobType) {
+        Cuboid cuboid = new Cuboid(location.clone().add(-distance, -distance, -distance), location.clone().add(distance, distance, distance));
+        List<Location> filteredLocations = new ArrayList<>();
+        for (int x = cuboid.getMinX(); x <= cuboid.getMaxX(); x++) {
+            for (int y = cuboid.getMinY(); y <= cuboid.getMaxY(); y++) {
+                for (int z = cuboid.getMinZ(); z <= cuboid.getMaxZ(); z++) {
+                    filteredLocations.addAll(cuboid.getFilteredBlockLocations(Material.AIR));
+                }
+            }
         }
-        MobType mobType = MobType.valueOf(Objects.requireNonNull(main.getConfig().getString("summon-rules.mob-type")).toUpperCase());
-        spawn(randomLocation, mobType);
-    }
-
-    private static Location getSafeRandomLocation(Location location) {
-        Location randomLocation = randomLocation(location);
-        Block b = getHighestBlock((int) randomLocation.getX(), (int) randomLocation.getZ(), Objects.requireNonNull(randomLocation.getWorld()));
-        if (!b.getType().isSolid()) { //Water, lava, shrubs...
-            b = randomLocation.getWorld().getBlockAt((int) randomLocation.getX(), b.getY() - 1, (int) randomLocation.getZ());
-        }
-        //Between max and min y
-        if (b.getY() >= main.getConfig().getInt("summon-rules.Y-level")) {
-            return randomLocation.add(0,1,0);
-        }
-        return null;
-    }
-
-    public static Block getHighestBlock(int x, int z, World world) {
-        Block b = world.getHighestBlockAt(x, z);
-        if (b.getType().toString().endsWith("AIR")) //1.15.1 or less
-            b = world.getBlockAt(x, b.getY() - 1, z);
-        return b;
-    }
-
-    private static void spawn(Location randomLocation, MobType mobType) {
+        Location spawnLocation = filteredLocations.get(new Random().nextInt(filteredLocations.size()));
+        new Debug("Spawn location: " + spawnLocation, Debug.DebugType.BOTH);
         if (mobType.equals(MobType.VANILLA)) {
-            summonVanillaEntity(randomLocation);
+            summonVanillaEntity(spawnLocation);
         } else if (mobType.equals(MobType.MYTHIC)) {
-            summonMythicMobEntity(randomLocation);
+            summonMythicMobEntity(spawnLocation);
         } else if (mobType.equals(MobType.MIXED)) {
             if (new Random().nextBoolean()) {
-                summonVanillaEntity(randomLocation);
+                summonVanillaEntity(spawnLocation);
             } else {
-                summonMythicMobEntity(randomLocation);
+                summonMythicMobEntity(spawnLocation);
             }
         }
     }
 
-    private static void summonVanillaEntity(Location location) {
+    public static void summonVanillaEntity(Location location) {
         // spawn vanilla mobs
         Random random = new Random();
         // random vanilla entity types
@@ -105,7 +89,7 @@ public class SummonManager {
         new Debug("Vanilla mob has been spawned at " + location, Debug.DebugType.BOTH);
     }
 
-    private static void summonMythicMobEntity(Location location) {
+    public static void summonMythicMobEntity(Location location) {
         // spawn mythic mobs
         List<String> bosses = new ArrayList<>(main.getConfig().getStringList("mythicMob-bosses-name"));
         List<String> miniBoss = new ArrayList<>(main.getConfig().getStringList("mythicMob-mini-boss-name"));
@@ -114,7 +98,6 @@ public class SummonManager {
             // summon bosses
             MythicMobsAPI.summon(location, bosses.get(random.nextInt(bosses.size())));
             new Debug("Boss has been spawned at " + location, Debug.DebugType.BOTH);
-            if (isBossSpawned) { new Reply(Reply.SenderType.BOTH, ChatColor.BOLD + "" + ChatColor.AQUA + "Boss has been spawned! at " + location); }
         } else {
             // summon mini-bosses
             MythicMobsAPI.summon(location, miniBoss.get(random.nextInt(miniBoss.size())));
@@ -133,7 +116,7 @@ public class SummonManager {
         return randomLocation.add(0,1,0);
     }
 
-    private static EntityType getEntityType(String entityType) {
+    public static EntityType getEntityType(String entityType) {
         try {
             return EntityType.valueOf(entityType); // get EntityType from string
         } catch (IllegalArgumentException e) {
@@ -153,7 +136,7 @@ public class SummonManager {
         }
     }
 
-    private static Boolean isUndead(Entity entity) {
+    public static Boolean isUndead(Entity entity) {
         return entity.getType().name().contains("ZOMBIE") || entity.getType().name().contains("SKELETON") || entity.getType().name().contains("PHANTOM");
     }
 }

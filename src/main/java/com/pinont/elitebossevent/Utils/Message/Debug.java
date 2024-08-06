@@ -35,8 +35,6 @@ public class Debug {
         } else if (debug && DebugType.BOTH.equals(type)) {
             new Debug(message, DebugType.INFO);
             new Debug(message, DebugType.PLAYER);
-        } else {
-            log.info(prefix + message);
         }
     }
 
