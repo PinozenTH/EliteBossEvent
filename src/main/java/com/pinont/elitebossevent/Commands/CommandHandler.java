@@ -22,6 +22,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     EliteBossEvent main = EliteBossEvent.getInstance();
 
+    SummonMobTask summonMobTask = new SummonMobTask();
+
     boolean bypass_perm = main.getConfig().getBoolean("debug.bypass-permission");
 
     public CommandHandler() {
@@ -56,12 +58,12 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                                 count = 0;
                             }
                         }
-                        for (int i = 0; i >= new SummonMobTask().maxTickedPlayers && i < Bukkit.getOnlinePlayers().size(); i++) {
+                        new Debug("Max Ticked player count: " + summonMobTask.getMaxTickedPlayers(), Debug.DebugType.INFO);
+                        for (int i = 0; i >= summonMobTask.getMaxTickedPlayers() && i < Bukkit.getOnlinePlayers().size(); i++) {
                             Player p = (Player) Bukkit.getOnlinePlayers().toArray()[i];
-                            new SummonMobTask().tickedPlayers.put(p, 0);
+                            summonMobTask.addTickPlayer(p);
                         }
-                        new Debug("Ticked players: " + new SummonMobTask().tickedPlayers, Debug.DebugType.INFO);
-                        new SummonMobTask().summonMob(count);
+                        summonMobTask.summonMob(count);
                         new Reply(Reply.SenderType.ALLPLAYER, "EliteBossEvent has been started!");
                     } else {
                         new Reply(sender, "You do not have permission to use this command!");

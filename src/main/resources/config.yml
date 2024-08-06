@@ -32,6 +32,8 @@ vanilla-entity-types: [
 
 # Spawn configuration
 summon-rules:
+  # [VANILLA, MYTHICMOB, MIXED]
+  mob-type: mixed
   # Worlds where the boss will be spawn
   spawn-worlds: [
       "world",
