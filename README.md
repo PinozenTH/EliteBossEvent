@@ -2,7 +2,7 @@
 
 
 # EliteBossEvent
-Minecraft plugin that enhances gameplay by introducing a timed event where a random \**(vanilla-mob + mythicmob)* is summoned near a random player every X minutes. This plugin adds an element of surprise and challenge, keeping players on their toes and making the game more exciting.
+Minecraft plugin that enhances gameplay by introducing a timed event where a random \**(vanilla-mob + mythicmob)* is summoned near a random player every X minutes
 
 ## Requirements
 
