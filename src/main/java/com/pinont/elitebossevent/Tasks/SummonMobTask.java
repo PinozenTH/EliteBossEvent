@@ -1,17 +1,16 @@
 package com.pinont.elitebossevent.Tasks;
 
+import com.pinont.elitebossevent.Config.Lang;
 import com.pinont.elitebossevent.EliteBossEvent;
-import com.pinont.elitebossevent.Utils.Box.Cuboid;
 import com.pinont.elitebossevent.Utils.Message.Debug;
 import com.pinont.elitebossevent.Utils.Message.Reply;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.pinont.elitebossevent.Utils.MobsManager.SummonManager.spawnAtPlayer;
 
@@ -56,7 +55,7 @@ public class SummonMobTask {
         int delay = main.getConfig().getInt("summon-rules.event-delay");
         boolean seconds = main.getConfig().getBoolean("debug.change-delay-to-sec");
         if (delay < 1) {
-            main.getLogger().warning("Event delay is less than 1, setting to default value of 10 minutes.");
+            main.getLogger().warning(Lang.WARN_LOW_DELAY.toString());
             delay = 10;
         }
         int period = seconds ? delay * 20 : delay * 1200;
@@ -68,7 +67,9 @@ public class SummonMobTask {
                     cancel();
                     return;
                 }
-                for (Player player : Bukkit.getOnlinePlayers()) {
+                for (int i = 0; i >= maxTickedPlayers && i < Bukkit.getOnlinePlayers().size(); i++) {
+                    Random random = new Random();
+                    Player player = Bukkit.getOnlinePlayers().toArray(new Player[0])[random.nextInt(Bukkit.getOnlinePlayers().size())];
                     if (tickedPlayers.size() >= maxTickedPlayers) {
                         break;
                     }
@@ -77,7 +78,11 @@ public class SummonMobTask {
                     }
                     tickedPlayers.put(player, 0);
                     // notify player
-                    new Reply(player, "Mob will be summoned at a certain player " + 30 + " seconds!");
+                    new Reply(player, Objects.requireNonNull(Lang.SUMMON_NOTIFY.toString().replace("<countdown>", "30")));
+                    new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.WARNING_PLAYER.toString()));
+                    for (Player tickedPlayer : tickedPlayers.keySet()) {
+                        tickedPlayer.addPotionEffect(PotionEffectType.GLOWING.createEffect(30 * 20, 1));
+                    }
                 }
                 summonMob(30);
             }
@@ -87,26 +92,31 @@ public class SummonMobTask {
     public void summonMob(int countDown) {
         final int[] count = {countDown};
         // delay 10 sec and notify player every sec before summoning mob
-        new Reply(Reply.SenderType.BOTH, "Mob will be summoned in 30 seconds!");
+        new Reply(Reply.SenderType.BOTH, Objects.requireNonNull(Lang.SUMMON_NOTIFY.toString().replace("<countdown>", "30")));
         task = new BukkitRunnable() {
             @Override
             public void run() {
                 if (count[0] == 0) {
                     if (tickedPlayers.isEmpty()) {
-                        new Reply(Reply.SenderType.BOTH, "No player ticked, mob will not be summoned!");
+                        new Reply(Reply.SenderType.BOTH, Lang.NO_PLAYER_TICKED.toString());
                         cancel();
                         return;
                     }
-                    new Reply(Reply.SenderType.BOTH, "Mob has been summoned!");
+                    new Reply(Reply.SenderType.BOTH, Lang.SUMMON_MOB.toString());
                     spawnAtPlayer(new ArrayList<>(tickedPlayers.keySet()));
                     tickedPlayers.clear();
                     cancel();
                     return;
                 }
-                new Reply(Reply.SenderType.BOTH, "Mob will be summoned in " + count[0] + " seconds!");
+                new Reply(Reply.SenderType.BOTH, Objects.requireNonNull(Lang.ELITE_EVENT_STARTING.toString().replace("<count>", String.valueOf(count[0]))));
                 count[0]--;
             }
         }.runTaskTimerAsynchronously(main, 0, 20);
     }
 
+    public void stop() {
+        clearTickPlayers();
+        task.cancel();
+        new Reply(Reply.SenderType.ALLPLAYER, Lang.ELITE_EVENT_STOPPED.toString());
+    }
 }

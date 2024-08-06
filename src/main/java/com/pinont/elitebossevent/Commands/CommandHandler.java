@@ -1,5 +1,6 @@
 package com.pinont.elitebossevent.Commands;
 
+import com.pinont.elitebossevent.Config.Lang;
 import com.pinont.elitebossevent.EliteBossEvent;
 import com.pinont.elitebossevent.Tasks.SummonMobTask;
 import com.pinont.elitebossevent.Utils.Message.Debug;
@@ -29,6 +30,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     public CommandHandler() {
         commandList.put("reload", "elitebossevent.reload");
         commandList.put("start", "elitebossevent.admin");
+        commandList.put("stop", "elitebossevent.admin");
     }
 
     @Override
@@ -44,10 +46,10 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 case "reload":
                     if (sender.hasPermission(commandList.get(args[0])) || bypass_perm) {
                         main.reloadConfig();
-                        new Reply(Reply.SenderType.CONSOLE, "EliteBossEvent has been reloaded!");
-                        new Reply("elitebossevent.notify", "EliteBossEvent has been reloaded!");
+                        new Reply(Reply.SenderType.CONSOLE, Lang.RELOAD.toString());
+                        new Reply("elitebossevent.notify", Lang.RELOAD.toString());
                     } else {
-                        new Reply(sender, "You do not have permission to use this command!");
+                        new Reply(sender, Lang.NO_PERMISSION.toString());
                     }
                     break;
                 case "start":
@@ -64,13 +66,19 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                             summonMobTask.addTickPlayer(p);
                         }
                         summonMobTask.summonMob(count);
-                        new Reply(Reply.SenderType.ALLPLAYER, "EliteBossEvent has been started!");
+                        new Reply(Reply.SenderType.ALLPLAYER, Lang.ELITE_EVENT_STARTED.toString());
                     } else {
-                        new Reply(sender, "You do not have permission to use this command!");
+                        new Reply(sender, Lang.NO_PERMISSION.toString());
                     }
                     break;
+                case "stop":
+                    if (sender.hasPermission(commandList.get(args[0])) || bypass_perm) {
+                        summonMobTask.stop();
+                    } else {
+                        new Reply(sender, Lang.NO_PERMISSION.toString());
+                    }
                 default:
-                    new Reply(sender, "Invalid command!");
+                    new Reply(sender, Lang.INVALID_COMMAND.toString());
                     break;
             }
         }

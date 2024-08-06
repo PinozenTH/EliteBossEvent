@@ -1,0 +1,32 @@
+# Plugins
+prefix: "&8[&6EliteBossEvent&8]"
+reload: "EliteBossEvent has been reloaded!"
+enable: "EliteBossEvent has been Enabled!"
+disable: "EliteBossEvent has been Disabled!"
+warn_low_delay: "Event delay is less than 1, setting to default value of 10 minutes."
+
+# Commands
+no_permission: "You do not have permission to use this command!"
+invalid_command: "Invalid command!"
+
+# Elite Boss Event
+elite_event_started: "Elite Boss Event has started!"
+elite_event_stopped: "Elite Boss Event has stopped!"
+elite_event_starting: "Mob will be summoned in <count> seconds!"
+no_player_ticked: "No player ticked, mob will not be summoned!"
+summon_mob: "Mob has been summoned!"
+summon_notify: "Mob will be summoned at a certain player <cooldown> seconds!"
+warning_player: "Please avoid a player with a glowing effect!"
+boss_spawned: "Boss has been spawned at <location>"
+mini_boss_spawned: "Mini-boss has been spawned at <location>"
+
+# Debug Mode
+debug_mode_enabled: "Debug mode is enabled!"
+
+# Mythic Mobs
+hooked_to_mythic_mobs: "Hooked into MythicMobs!"
+checking_provided_mythic_mobs: "Checking provided MythicMobs..."
+no_mythic_mobs: "MythicMobs not found! Disabling plugin..."
+not_valid_mythic_mob: "&c is not a valid MythicMob!"
+registered_mythic_mob: "&a✓ Registered MythicMob: &e"
+null_mythic_mob: "&c is null, make sure that mobs is exist!"

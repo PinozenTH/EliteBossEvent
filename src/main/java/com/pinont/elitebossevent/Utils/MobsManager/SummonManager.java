@@ -1,5 +1,6 @@
 package com.pinont.elitebossevent.Utils.MobsManager;
 
+import com.pinont.elitebossevent.Config.Lang;
 import com.pinont.elitebossevent.EliteBossEvent;
 import com.pinont.elitebossevent.Hooks.MythicMobsAPI;
 import com.pinont.elitebossevent.Utils.Box.Cuboid;
@@ -7,8 +8,6 @@ import com.pinont.elitebossevent.Utils.Message.Debug;
 import com.pinont.elitebossevent.Utils.Message.Reply;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -97,11 +96,11 @@ public class SummonManager {
         if (random.nextBoolean() && !isBossSpawned) {
             // summon bosses
             MythicMobsAPI.summon(location, bosses.get(random.nextInt(bosses.size())));
-            new Debug("Boss has been spawned at " + location, Debug.DebugType.BOTH);
+            new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.BOSS_SPAWNED.toString().replace("<location>", location.toString())));
         } else {
             // summon mini-bosses
             MythicMobsAPI.summon(location, miniBoss.get(random.nextInt(miniBoss.size())));
-            new Debug("Mini-boss has been spawned at " + location, Debug.DebugType.BOTH);
+            new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.MINI_BOSS_SPAWNED.toString().replace("<location>", location.toString())));
         }
     }
 

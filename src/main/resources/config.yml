@@ -6,6 +6,8 @@ debug:
   # bypass-permission for debug mode
   bypass-permission: false
 
+language: en-us.yml
+
 # Mythic mobs boss name list
 mythicMob-bosses-name: [
     "ExampleBossA",
@@ -21,13 +23,14 @@ mythicMob-mini-boss-name: [
     "MythicMiniBossC",
 ]
 
+# get entity name from https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
 vanilla-entity-types: [
-    "CHARGED_CREEPER",
+    "CREEPER",
     "PIGLIN",
     "HOGLIN",
     "WITHER_SKELETON",
-    "BABY_ZOMBIE",
-    "JOCKEY_SKELETON"
+    "ZOMBIE",
+    "SKELETON"
 ]
 
 # Spawn configuration
@@ -40,8 +43,8 @@ summon-rules:
       "world_nether",
       "world_the_end"
   ]
-  # Radius of the spawn area (default: 10)
-  distance: 10
+  # Radius of the spawn area (default: 5)
+  distance: 5
   # Minimum players required to start the event (default: 3)
   min-players: 3
   # Maximum players allowed to get tick per area (set to 0 for online players size / 2)
