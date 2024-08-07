@@ -15,6 +15,12 @@ Java Version 17
 ## Optional Dependencies
 
 - Luckperms
+- PlugmanX
+
+## Commands
+
+- /ebe reload *"Reload Config file"*
+- /ebe start [optional:now] *"Start event (now = start event immediately)"*
 
 ## Configurations
 
