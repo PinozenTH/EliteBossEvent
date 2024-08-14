@@ -4,7 +4,6 @@ import com.pinont.elitebossevent.Commands.CommandHandler;
 import com.pinont.elitebossevent.Config.Lang;
 import com.pinont.elitebossevent.Hooks.MythicMobsAPI;
 import com.pinont.elitebossevent.Listeners.EntityListener;
-import com.pinont.elitebossevent.Listeners.MythicMobsListener;
 import com.pinont.elitebossevent.Tasks.SummonMobTask;
 import com.pinont.elitebossevent.Utils.Message.Debug;
 import com.pinont.elitebossevent.Utils.Message.Debug.DebugType;
@@ -65,7 +64,6 @@ public class EliteBossEvent extends JavaPlugin {
     }
 
     private void registerListeners() {
-        getServer().getPluginManager().registerEvents(new MythicMobsListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
     }
 
