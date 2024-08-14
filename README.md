@@ -8,7 +8,7 @@ Minecraft plugin that enhances gameplay by introducing a timed event where a ran
 
 Minecraft Version 1.20.x+
 
-Java Version 21
+Java Version 17
 
 [Mythic Mobs](https://mythiccraft.io/index.php?pages/official-mythicmobs-download/&version=5.6.2#google_vignette) need to be install to make it work!
 
