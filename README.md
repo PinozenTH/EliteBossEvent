@@ -29,7 +29,7 @@ Java Version 21
 debug:
   # recommended to set this to false if you don't know what you're doing
   enabled: false
-  # recommended to set a value to 10 or higher for better performance
+  # recommended to set event-delay value to 60 or higher for better performance
   change-delay-to-sec: false
   # bypass-permission for debug mode
   bypass-permission: false
@@ -82,15 +82,13 @@ summon-rules:
   # Max boss spawn count per world (default: 1)
   max-boss-spawn-count-per-world: 1
   # Check level requirement (default: false)
-  check-level-requirement: false
+# (WIP) check-level-requirement: false
   # Level requirement for player when boss is about to spawn (default: 1)
-  level-requirement: 10
+# (WIP) level-requirement: 1
   # Check permission requirement (default: false)
   check-permission-requirement: false
   # Boss spawn chance (default: 0.1)
   boss-spawn-chance: 0.1
-  # Include normal mobs when spawning? (default: false)
-  use-vanilla-mobs: false
   # delay in minutes before the event starts (default: 10)
   event-delay: 10
   # what y level for starting pick a player and  spawning mobs (default: 64)
