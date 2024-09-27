@@ -29,7 +29,6 @@ public class Reply {
                 }
             }
         } else if (SenderType.ALLPLAYER.equals(type)) {
-            getServer().broadcastMessage(message);
             if (!getServer().getOnlinePlayers().isEmpty()) {
                 for (Player player : getServer().getOnlinePlayers()) {
                     player.sendMessage(message);

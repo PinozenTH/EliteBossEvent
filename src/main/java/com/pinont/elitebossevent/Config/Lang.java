@@ -28,7 +28,7 @@ public enum Lang {
     ELITE_EVENT_STARTED("elite_event_started", "Elite Boss Event has started!"),
     ELITE_EVENT_STOPPED("elite_event_stopped", "Elite Boss Event has stopped!"),
     ELITE_EVENT_STARTING("elite_event_starting", "Mob will be summoned in <count> seconds!"),
-    NO_PLAYER_TICKED("no_player_ticked", "No player ticked, mob will not be summoned!"),
+    NO_PLAYER_TICKED("no_player_ticked", "No player was ticked, mob will not be summoned!"),
     SUMMON_MOB("summon_mob", "Mob has been summoned!"),
     SUMMON_NOTIFY("summon_notify", "Mob will be summoned at a certain player <cooldown> seconds!"),
     WARNING_PLAYER("warning_player", "Please avoid a player with a glowing effect!"),

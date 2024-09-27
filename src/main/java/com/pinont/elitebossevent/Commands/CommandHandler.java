@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,18 +24,23 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     EliteBossEvent main = EliteBossEvent.getInstance();
 
-    SummonMobTask summonMobTask = new SummonMobTask();
+    SummonMobTask summonMobTask = main.summonMobTask;
 
     boolean bypass_perm = main.getConfig().getBoolean("debug.bypass-permission");
 
     public CommandHandler() {
-        commandList.put("reload", "elitebossevent.reload");
+        commandList.put("reload", "elitebossevent.admin");
         commandList.put("start", "elitebossevent.admin");
         commandList.put("stop", "elitebossevent.admin");
+        commandList.put("delay-status", "elitebossevent.admin");
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (main.debug) {
+            new Debug("Command: " + command.getName() + " Label: " + label + " Args: " + Arrays.toString(args), Debug.DebugType.BOTH);
+            new Debug("Bypass permission: " + bypass_perm, Debug.DebugType.BOTH);
+        }
         if (args.length == 0) {
             return false;
         }
@@ -45,9 +51,15 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             switch (args[0]) {
                 case "reload":
                     if (sender.hasPermission(commandList.get(args[0])) || bypass_perm) {
+                        if (summonMobTask.scheduleTask != null) {
+                            summonMobTask.scheduleTask.cancel();
+                        } else {
+                            new Debug("Task is null or not scheduling", Debug.DebugType.WARNING);
+                        }
                         main.reloadConfig();
                         new Reply(Reply.SenderType.CONSOLE, Lang.RELOAD.toString());
                         new Reply("elitebossevent.notify", Lang.RELOAD.toString());
+                        main.executeTask();
                     } else {
                         new Reply(sender, Lang.NO_PERMISSION.toString());
                     }
@@ -60,13 +72,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                                 count = 0;
                             }
                         }
-                        new Debug("Max Ticked player count: " + summonMobTask.getMaxTickedPlayers(), Debug.DebugType.INFO);
-                        for (int i = 0; i >= summonMobTask.getMaxTickedPlayers() && i < Bukkit.getOnlinePlayers().size(); i++) {
-                            Player p = (Player) Bukkit.getOnlinePlayers().toArray()[i];
-                            summonMobTask.addTickPlayer(p);
-                        }
                         summonMobTask.summonMob(count);
-                        new Reply(Reply.SenderType.ALLPLAYER, Lang.ELITE_EVENT_STARTED.toString());
                     } else {
                         new Reply(sender, Lang.NO_PERMISSION.toString());
                     }
@@ -77,6 +83,14 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                     } else {
                         new Reply(sender, Lang.NO_PERMISSION.toString());
                     }
+                    break;
+                case "delay-status":
+                    if (sender.hasPermission(commandList.get(args[0])) || bypass_perm) {
+                        new Reply(sender, "Delay status: " + summonMobTask.getDelayStatus());
+                    } else {
+                        new Reply(sender, Lang.NO_PERMISSION.toString());
+                    }
+                    break;
                 default:
                     new Reply(sender, Lang.INVALID_COMMAND.toString());
                     break;
@@ -88,6 +102,9 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        return List.of(commandList.keySet().toArray(new String[0]));
+        if ((commandSender.hasPermission("elitebossevent.admin") || bypass_perm) && strings.length == 0) {
+            return List.of(commandList.keySet().toArray(new String[0]));
+        }
+        return null;
     }
 }

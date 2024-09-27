@@ -26,7 +26,7 @@ public class SummonManager {
 
     private static final int distance = main.getConfig().getInt("summon-rules.distance");
 
-    public static void spawnAtPlayer(List<Player> players) {
+    public static void spawnAtPlayer(ArrayList<Player> players) {
         HashMap<Player, Integer> playerMap = new HashMap<>();
         for (Player player : players) {
             playerMap.put(player, 0);
