@@ -19,22 +19,12 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (Bukkit.getOnlinePlayers().isEmpty() || main.getConfig().getInt("elite-boss-event.min-players") > Bukkit.getOnlinePlayers().size()) {
-            if (Bukkit.getOnlinePlayers().size() == 1) {
-                new Reply(Reply.SenderType.CONSOLE, "Minimum players reached, Elite event is resuming!");
-                main.executeTask();
-            }
-            summonMobTask.updateMaxTickedPlayers();
-        }
+        summonMobTask.updateMaxTickedPlayers();
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Bukkit.getScheduler().runTask(main, () -> {
-            if (Bukkit.getOnlinePlayers().isEmpty() || main.getConfig().getInt("elite-boss-event.min-players") > Bukkit.getOnlinePlayers().size()) {
-                new Reply(Reply.SenderType.CONSOLE, "Online players are less than minimum players required, Elite event is pausing!");
-                summonMobTask.stop();
-            }
             summonMobTask.updateMaxTickedPlayers();
         });
     }

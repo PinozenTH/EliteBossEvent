@@ -91,18 +91,17 @@ public class SummonMobTask {
             delay = 10;
         }
         int period = seconds ? delay * 20 : delay * 1200;
-
+        new Reply(Reply.SenderType.CONSOLE, Lang.ELITE_EVENT_STARTING.toString());
         scheduleTask = new BukkitRunnable() {
             @Override
             public void run() {
                 if (main.getConfig().getInt("summon-rules.min-players") > Bukkit.getOnlinePlayers().size()) {
-                    new Reply(Reply.SenderType.CONSOLE, "No player online, pausing event...");
-                    cancel();
+                    new Debug("Not enough players to start event!", Debug.DebugType.INFO);
                     return;
                 }
                 summonMob(30);
             }
-        }.runTaskTimerAsynchronously(main, 5 * 30 * 20, period);
+        }.runTaskTimerAsynchronously(main, 0, period);
         new Debug("Task has been scheduled! [" + scheduleTask.getTaskId() + "]", Debug.DebugType.INFO);
     }
 
@@ -127,10 +126,15 @@ public class SummonMobTask {
                     cancel();
                     return;
                 }
-                if (count[0] <= 5) new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.ELITE_EVENT_STARTING.toString().replace("<count>", String.valueOf(count[0]))));
+                if (count[0] <= 5 && count[0] > 0) {
+                    new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.ELITE_EVENT_STARTING.toString().replace("<count>", String.valueOf(count[0]))));
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                    }
+                }
                 count[0]--;
             }
-        }.runTaskTimerAsynchronously(main, 20, 20);
+        }.runTaskTimerAsynchronously(main, 0, 20);
     }
 
     public void stop() {

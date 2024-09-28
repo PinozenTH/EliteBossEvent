@@ -73,6 +73,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                             }
                         }
                         summonMobTask.summonMob(count);
+                        new Reply(Reply.SenderType.ALLPLAYER, "EliteBoss wave is starting");
                     } else {
                         new Reply(sender, Lang.NO_PERMISSION.toString());
                     }
@@ -80,6 +81,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 case "stop":
                     if (sender.hasPermission(commandList.get(args[0])) || bypass_perm) {
                         summonMobTask.stop();
+                        new Reply(sender, "EliteBoss Stop until \"/ebe start\" to reactivate");
                     } else {
                         new Reply(sender, Lang.NO_PERMISSION.toString());
                     }
