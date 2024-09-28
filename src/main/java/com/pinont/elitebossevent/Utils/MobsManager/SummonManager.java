@@ -92,15 +92,19 @@ public class SummonManager {
         // spawn mythic mobs
         List<String> bosses = new ArrayList<>(main.getConfig().getStringList("mythicMob-bosses-name"));
         List<String> miniBoss = new ArrayList<>(main.getConfig().getStringList("mythicMob-mini-boss-name"));
+        double spawnLocationX = location.getX();
+        double spawnLocationY = location.getY();
+        double spawnLocationZ = location.getZ();
+        String Position = spawnLocationX + ", " + spawnLocationY + ", " + spawnLocationZ;
         Random random = new Random();
         if (random.nextBoolean() && !isBossSpawned) {
             // summon bosses
             MythicMobsAPI.summon(location, bosses.get(random.nextInt(bosses.size())));
-            new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.BOSS_SPAWNED.toString().replace("<location>", location.toString())));
+            new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.BOSS_SPAWNED.toString().replace("<location>", Position)));
         } else {
             // summon mini-bosses
             MythicMobsAPI.summon(location, miniBoss.get(random.nextInt(miniBoss.size())));
-            new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.MINI_BOSS_SPAWNED.toString().replace("<location>", location.toString())));
+            new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.MINI_BOSS_SPAWNED.toString().replace("<location>", Position)));
         }
     }
 
