@@ -30,7 +30,7 @@ public enum Lang {
     ELITE_EVENT_STARTING("elite_event_starting", "Mob will be summoned in <count> seconds!"),
     NO_PLAYER_TICKED("no_player_ticked", "No player was ticked, mob will not be summoned!"),
     SUMMON_MOB("summon_mob", "Mob has been summoned!"),
-    SUMMON_NOTIFY("summon_notify", "Mob will be summoned at a certain player <cooldown> seconds!"),
+    SUMMON_NOTIFY("summon_notify", "Mob will be summoned at a certain player <countdown> seconds!"),
     WARNING_PLAYER("warning_player", "Please avoid a player with a glowing effect!"),
     BOSS_SPAWNED("boss_spawned", "Boss has been spawned at <location>"),
     MINI_BOSS_SPAWNED("mini_boss_spawned", "Mini-boss has been spawned at <location>"),
