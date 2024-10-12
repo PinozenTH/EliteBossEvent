@@ -5,6 +5,7 @@ import com.pinont.elitebossevent.EliteBossEvent;
 import com.pinont.elitebossevent.Utils.Message.Debug;
 import com.pinont.elitebossevent.Utils.Message.Reply;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -13,6 +14,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
+import static com.pinont.elitebossevent.Utils.MobsManager.SummonManager.isWorldAllowed;
 import static com.pinont.elitebossevent.Utils.MobsManager.SummonManager.spawnAtPlayer;
 
 public class SummonMobTask {
@@ -37,7 +39,10 @@ public class SummonMobTask {
             if (player == null) {
                 new Debug("Player is null!", Debug.DebugType.BOTH);
                 continue;
+            } else if (!isWorldAllowed(player.getWorld())) {
+                continue;
             }
+
             new Debug("Player " + player.getName() + " has been ticked!", Debug.DebugType.BOTH);
             if (tickedPlayers.size() >= maxTickedPlayers) {
                 new Debug("Max ticked players reached!", Debug.DebugType.BOTH);

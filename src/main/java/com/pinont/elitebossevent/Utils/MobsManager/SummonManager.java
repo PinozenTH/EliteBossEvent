@@ -8,6 +8,7 @@ import com.pinont.elitebossevent.Utils.Message.Debug;
 import com.pinont.elitebossevent.Utils.Message.Reply;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -26,6 +27,12 @@ public class SummonManager {
 
     private static final int distance = main.getConfig().getInt("summon-rules.distance");
 
+    private static final String summonWorld = main.getConfig().getString("summon-rules.spawn-worlds");
+
+    public static Boolean isWorldAllowed(World world) {
+        return summonWorld != null && summonWorld.contains(world.getName());
+    }
+
     public static void spawnAtPlayer(ArrayList<Player> players) {
         HashMap<Player, Integer> playerMap = new HashMap<>();
         for (Player player : players) {
@@ -37,6 +44,9 @@ public class SummonManager {
                 for (Map.Entry<Player, Integer> entry : playerMap.entrySet()) {
                     Player player = entry.getKey();
                     int count = entry.getValue();
+                    if (!isWorldAllowed(player.getWorld())) {
+                        playerMap.remove(player);
+                    } else
                     if (count >= main.getConfig().getInt("summon-rules.max-mobs-spawn-count-per-player")) {
                         playerMap.remove(player);
                     } else {

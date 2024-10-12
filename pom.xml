@@ -6,7 +6,7 @@
 
   <groupId>com.pinont</groupId>
   <artifactId>EliteBossEvent</artifactId>
-  <version>1.01-BugFixed</version>
+  <version>1.03</version>
   <packaging>jar</packaging>
 
   <name>EliteBossEvent</name>
