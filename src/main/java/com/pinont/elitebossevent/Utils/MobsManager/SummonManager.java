@@ -27,10 +27,9 @@ public class SummonManager {
 
     private static final int distance = main.getConfig().getInt("summon-rules.distance");
 
-    private static final String summonWorld = main.getConfig().getString("summon-rules.spawn-worlds");
-
+    private static final List<String> summonWorld = main.getConfig().getStringList("summon-rules.worlds");
     public static Boolean isWorldAllowed(World world) {
-        return summonWorld != null && summonWorld.contains(world.getName());
+        return summonWorld.contains(world.getName());
     }
 
     public static void spawnAtPlayer(ArrayList<Player> players) {
@@ -116,17 +115,6 @@ public class SummonManager {
             MythicMobsAPI.summon(location, miniBoss.get(random.nextInt(miniBoss.size())));
             new Reply(Reply.SenderType.ALLPLAYER, Objects.requireNonNull(Lang.MINI_BOSS_SPAWNED.toString().replace("<location>", Position)));
         }
-    }
-
-    private static Location randomLocation(Location location) {
-        Location randomLocation = location.clone();
-        int min = main.getConfig().getInt("summon-rules.min-distance");
-        int max = main.getConfig().getInt("summon-rules.max-distance");
-        int distanceX = new Random().nextInt(max - min) + min;
-        int distanceZ = new Random().nextInt(max - min) + min;
-        int distanceY = new Random().nextInt(max - min) + min;
-        randomLocation.add(distanceX, distanceY, distanceZ);
-        return randomLocation.add(0,1,0);
     }
 
     public static EntityType getEntityType(String entityType) {

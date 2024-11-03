@@ -5,7 +5,6 @@ import com.pinont.elitebossevent.EliteBossEvent;
 import com.pinont.elitebossevent.Utils.Message.Debug;
 import com.pinont.elitebossevent.Utils.Message.Reply;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
